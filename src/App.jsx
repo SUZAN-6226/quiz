@@ -1,65 +1,54 @@
-
 import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [ currentQuestion, setCurrentQuestion] = useState(0)
+  const [ currentQuestion, setCurrentQuestion ] = useState(0)
 
-  const [next, setNext ] = useState(false);
+  const [ next, setNext] = useState(false);
 
   const [ answers, setAnswers] = useState([]);
 
-  const[ score, setScore ] = useState(0);
+  const [ score, setScore] = useState(0);
 
-  const[ feedback, setFeedback ] = useState(null);
+  const [ feedback,setFeedback] = useState(null);
 
-
-const[showScore, setshowScore] = useState(false);
+  const [ showScore, setShowScore] = useState(false);
 
   const handleAnswer = (answer) =>{
-
+    
+    // console.log(answer);
     const newAnswer = {
-
-      quistion: quizData[currentQuestion].question,
-
+      question: quizData[currentQuestion].question,
       answer:answer,
-
       correct: answer === quizData[currentQuestion].correct,
     };
-
+    // console.log(newAnswer);
     if (newAnswer.correct){
-
       setScore((prevScore) => prevScore + 1);
       setFeedback('〇');
-
-    } else {
+     }else{
       setFeedback('×');
-
-    }
+     }
     setAnswers([...answers, newAnswer]);
     console.log(answers);
-
     setNext(true);
   }
-
-  const goToNextQuestion = () =>{
-    const NextQuestion = currentQuestion + 1
-
-    if (NextQuestion  <quizData.length){
+  const goToNextQuestion=() => {
+    const NextQuestion = currentQuestion+1
+    if (NextQuestion < quizData.length){
       setCurrentQuestion(NextQuestion);
     }else{
-
-      setshowScore(true);
+      setShowScore(true);
     }
     setNext(false)
   }
   return (
     <div className='quiz-container'>
-      {showScore ? (
-        <div className='score-section'>
-          <h1>スコア</h1>
+    {showScore ? (
+      <div className='score-section'>
+        <h1>スコア</h1>
         <h2>{score}/{quizData.length}</h2>
-         <table className='answer-table'>
+        <table className='answer-table'>
           <thead>
             <tr>
               <td>質問</td> <td>あなたの解答</td> <td>合否</td>
@@ -72,46 +61,42 @@ const[showScore, setshowScore] = useState(false);
                 <td>{item.answer}</td>
                 <td>{item.correct ? '〇' : '×'}</td>
               </tr>
+
             ))}
           </tbody>
-
         </table>
-        </div>
-      ) : (
-              <div className='question-section'>
+      </div>
+    ) : (
+
+           <div className='question-section'>
         <h1>問題{currentQuestion + 1}/{quizData.length}</h1>
         <h2>{quizData[currentQuestion].question}</h2>
-      
+        
         {next ? (
           <div className='feedback-section'>
           <h2 className='large-feedback'>{feedback}</h2>
+          
           <p>正解は</p>
           <p>{quizData[currentQuestion].correct}</p>
-          <button onClick={goToNextQuestion}>次の問題へ</button>
+          <button onClick={goToNextQuestion}>次の問題</button>
           </div>
-        ) : (
-           <div className='answer-section'>
-          {quizData[currentQuestion].options.map((item, index)=>(
-            <button key={index} onClick={() => handleAnswer(item)} className={`quiz-option-button option-${index}`}>{item}</button>
-          ))}
-        </div>
-          ) }
-
-
-       
+        ):(
+          
+          
+      <div className='answer-section'>
+        {quizData[currentQuestion].options.map((item, index)=>(
+          <button key={index} onClick={() =>handleAnswer(item)} className={`quiz-option-button option-${index}`}>{item}</button>
+        ))}
       </div>
-
-      ) }
-
-
-
+      )}
+      </div>
+    )}
       
     </div>
-  );
+);
 }
 
 export default App;
-
 const quizData = [
   {
     question: "太陽系で最も大きい惑星はどれですか？",
@@ -134,3 +119,5 @@ const quizData = [
     correct: "ブロッコリー",
   },
 ];
+
+
